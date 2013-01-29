@@ -20,9 +20,9 @@ import groovy.sql.builder.node.LimitCriteria
 /**
  *
  *
- * @author Benjamin Muschko
+ * @author Peyman Khanjan
  */
-class LimitCriteriaFactory extends LogicOperatorCriteriaAbstractFactory {
+class LimitCriteriaFactory extends CriteriaAbstractFactory {
     @Override
     String getName() {
         'limit'

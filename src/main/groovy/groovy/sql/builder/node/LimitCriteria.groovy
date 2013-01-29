@@ -18,7 +18,7 @@ package groovy.sql.builder.node
 /**
  *
  *
- * @author Benjamin Muschko
+ * @author Peyman Khanjan
  */
 class LimitCriteria implements Criteria {
     def value
