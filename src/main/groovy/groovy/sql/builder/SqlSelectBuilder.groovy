@@ -37,7 +37,7 @@ class SqlSelectBuilder extends AbstractSqlFactoryBuilder {
                 new IsNullCriteriaFactory(), new IsNotNullCriteriaFactory(), new GreaterThanCriteriaFactory(), new GreaterThanEqualsCriteriaFactory(),
                 new LessThanCriteriaFactory(), new LessThanEqualsCriteriaFactory(), new BetweenCriteriaFactory(), new InCriteriaFactory(),
                 new AndLogicOperationFactory(), new OrLogicOperationFactory(), new NotLogicOperatorFactory(),
-                new OrderCriteriaFactory(), new LimitCriteriaFactory()].asImmutable()
+                new OrderCriteriaFactory(), new LimitCriteriaFactory(), new ColumnsCriteriaFactory()].asImmutable()
     }
 
     private class SelectFactory extends GroovySqlAbstractFactory {
@@ -65,7 +65,9 @@ class SqlSelectBuilder extends AbstractSqlFactoryBuilder {
 
         private String createSql(String table, SelectClauseElements clauseElements) {
             def sql = new StringBuilder()
-            sql <<= "SELECT * FROM ${table}"
+
+            def columns = !clauseElements.columns ? '*' : clauseElements.columns.renderExpression()
+            sql <<= "SELECT $columns FROM ${table}"
 
             if (clauseElements.where.size() > 0) {
                 sql <<= " ${getCriteriaExpression(clauseElements.where)}"

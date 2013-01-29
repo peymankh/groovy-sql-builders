@@ -18,13 +18,17 @@ package groovy.sql.builder.node
 /**
  *
  *
- * @author Benjamin Muschko
+ * @author Peyman Khanjan
  */
-class SelectClauseElements {
-    List<Criteria> where = []
-    def groupBy
-    def having
-    def orderBy
-    def limit
-    def columns
+class ColumnsCriteria implements Criteria {
+    def value
+
+    ColumnsCriteria(value) {
+        this.value = value
+    }
+
+    @Override
+    def renderExpression() {
+        this.value.join(', ')
+    }
 }

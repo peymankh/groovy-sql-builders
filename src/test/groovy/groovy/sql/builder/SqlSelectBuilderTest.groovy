@@ -75,6 +75,34 @@ class SqlSelectBuilderTest extends SqlBuilderFixture {
     }
 
     @Test
+    public void testBuildingWithColumns()
+    {
+        def builder = new SqlSelectBuilder(sql)
+        def select = builder.select(TABLE_NAME) {
+            columns(['name', 'state'])
+        }
+
+        assert select.statement.sql == "SELECT name, state FROM city"
+        assert select.statement.params.size() == 0
+        def rows = sql.rows("SELECT name, state FROM city")
+        assert rows.size() == 4
+        assert rows.get(0).name == "Grand Rapids"
+        assert rows.get(0).state == "Michigan"
+        assert rows.get(0).size() == 2
+        assert rows.get(1).name == "Little Rock"
+        assert rows.get(1).state == "Arkansas"
+        assert rows.get(1).size() == 2
+        assert rows.get(2).name == "Boston"
+        assert rows.get(2).state == "Massachusetts"
+        assert rows.get(2).size() == 2
+        assert rows.get(3).name == "Gulfport"
+        assert rows.get(3).state == "Mississippi"
+        assert rows.get(3).size() == 2
+        println "Selected rows: ${select.result}"
+    }
+
+
+    @Test
     public void testBuildingWithEqualsCriteriaSingleTable() {
         def builder = new SqlSelectBuilder(sql)
         def select = builder.select(TABLE_NAME) {

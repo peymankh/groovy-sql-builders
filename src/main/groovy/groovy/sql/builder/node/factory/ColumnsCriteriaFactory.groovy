@@ -13,18 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package groovy.sql.builder.node
+package groovy.sql.builder.node.factory
+
+import groovy.sql.builder.node.ColumnsCriteria
 
 /**
  *
  *
- * @author Benjamin Muschko
+ * @author Peyman Khanjan
  */
-class SelectClauseElements {
-    List<Criteria> where = []
-    def groupBy
-    def having
-    def orderBy
-    def limit
-    def columns
+class ColumnsCriteriaFactory extends CriteriaAbstractFactory {
+    @Override
+    String getName() {
+        'columns'
+    }
+
+    @Override
+    Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes) {
+        new ColumnsCriteria(value)
+    }
+
+    @Override
+    void setParent(FactoryBuilderSupport builder, Object parent, Object child) {
+        parent.clauseElements.columns = child
+    }
+
+    @Override
+    public boolean isLeaf() {
+        true
+    }
 }
