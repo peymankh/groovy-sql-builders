@@ -23,7 +23,7 @@ import org.junit.Test
  *
  * @author Benjamin Muschko
  */
-class GroovySqlSelectBuilderTest extends GroovySqlBuilderFixture {
+class SqlSelectBuilderTest extends SqlBuilderFixture {
     @Before
     @Override
     public void setUp() {
@@ -52,7 +52,7 @@ class GroovySqlSelectBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithNoCriteriaSingleTable() {
-        def builder = new GroovySqlSelectBuilder(sql)
+        def builder = new SqlSelectBuilder(sql)
         def select = builder.select(TABLE_NAME)
 
         assert select.statement.sql == "SELECT * FROM city"
@@ -76,7 +76,7 @@ class GroovySqlSelectBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithEqualsCriteriaSingleTable() {
-        def builder = new GroovySqlSelectBuilder(sql)
+        def builder = new SqlSelectBuilder(sql)
         def select = builder.select(TABLE_NAME) {
             eq(name: 'name', value: 'Grand Rapids')
         }
@@ -93,7 +93,7 @@ class GroovySqlSelectBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithLikeCriteriaSingleTableOrderedDefault() {
-        def builder = new GroovySqlSelectBuilder(sql)
+        def builder = new SqlSelectBuilder(sql)
         def select = builder.select(TABLE_NAME) {
             like(name: 'name', value: 'G%')
             order(name: 'name')
@@ -114,7 +114,7 @@ class GroovySqlSelectBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithLikeCriteriaSingleTableOrderedAsc() {
-        def builder = new GroovySqlSelectBuilder(sql)
+        def builder = new SqlSelectBuilder(sql)
         def select = builder.select(TABLE_NAME) {
             like(name: 'name', value: 'G%')
             order(name: 'name', value: 'asc')
@@ -135,7 +135,7 @@ class GroovySqlSelectBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithLikeCriteriaSingleTableOrderedDesc() {
-        def builder = new GroovySqlSelectBuilder(sql)
+        def builder = new SqlSelectBuilder(sql)
         def select = builder.select(TABLE_NAME) {
             like(name: 'name', value: 'G%')
             order(name: 'name', value: 'desc')

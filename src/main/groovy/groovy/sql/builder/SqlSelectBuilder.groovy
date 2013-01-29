@@ -26,18 +26,18 @@ import groovy.sql.builder.node.SelectClauseElements
  *
  * @author Benjamin Muschko
  */
-class GroovySqlSelectBuilder extends AbstractGroovySqlFactoryBuilder {
-        GroovySqlSelectBuilder(Sql sql) {
+class SqlSelectBuilder extends AbstractSqlFactoryBuilder {
+    SqlSelectBuilder(Sql sql) {
         super(sql)
     }
 
     @Override
     List<NamedAbstractFactory> getNamedFactories() {
         [new SelectFactory(), new EqualsCriteriaFactory(), new NotEqualsCriteriaFactory(), new LikeCriteriaFactory(),
-         new IsNullCriteriaFactory(), new IsNotNullCriteriaFactory(), new GreaterThanCriteriaFactory(), new GreaterThanEqualsCriteriaFactory(),
-         new LessThanCriteriaFactory(), new LessThanEqualsCriteriaFactory(), new BetweenCriteriaFactory(), new InCriteriaFactory(),
-         new AndLogicOperationFactory(), new OrLogicOperationFactory(), new NotLogicOperatorFactory(),
-         new OrderCriteriaFactory()].asImmutable()
+                new IsNullCriteriaFactory(), new IsNotNullCriteriaFactory(), new GreaterThanCriteriaFactory(), new GreaterThanEqualsCriteriaFactory(),
+                new LessThanCriteriaFactory(), new LessThanEqualsCriteriaFactory(), new BetweenCriteriaFactory(), new InCriteriaFactory(),
+                new AndLogicOperationFactory(), new OrLogicOperationFactory(), new NotLogicOperatorFactory(),
+                new OrderCriteriaFactory(), new LimitCriteriaFactory()].asImmutable()
     }
 
     private class SelectFactory extends GroovySqlAbstractFactory {
@@ -67,12 +67,16 @@ class GroovySqlSelectBuilder extends AbstractGroovySqlFactoryBuilder {
             def sql = new StringBuilder()
             sql <<= "SELECT * FROM ${table}"
 
-            if(clauseElements.where.size() > 0) {
+            if (clauseElements.where.size() > 0) {
                 sql <<= " ${getCriteriaExpression(clauseElements.where)}"
             }
 
-            if(clauseElements.orderBy) {
+            if (clauseElements.orderBy) {
                 sql <<= " ${clauseElements.orderBy.renderExpression()}"
+            }
+
+            if (clauseElements.limit) {
+                sql <<= " ${clauseElements.limit.renderExpression()}"
             }
 
             sql

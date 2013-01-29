@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package groovy.sql.builder.node.factory
-
-import groovy.sql.builder.node.Criteria
-import groovy.sql.builder.SqlSelectBuilder.Select
+package groovy.sql.builder.node
 
 /**
  *
  *
  * @author Benjamin Muschko
  */
-abstract class CriteriaAbstractFactory extends NamedAbstractFactory {
+class LimitCriteria implements Criteria {
+    def value
+
+    LimitCriteria(value) {
+        this.value = value
+    }
+
     @Override
-    void setParent(FactoryBuilderSupport builder, Object parent, Object child) {
-        if(child instanceof Criteria) {
-            if(parent instanceof Select) {
-                parent.clauseElements.where << child
-            }
-            else {
-                parent.criterias << child
-            }
-        }
+    def renderExpression() {
+        "LIMIT $value"
     }
 }

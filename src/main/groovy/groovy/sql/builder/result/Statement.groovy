@@ -16,8 +16,6 @@
 package groovy.sql.builder.result
 
 /**
- *
- *
  * @author Benjamin Muschko
  */
 class Statement {

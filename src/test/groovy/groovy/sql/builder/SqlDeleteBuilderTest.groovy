@@ -23,7 +23,7 @@ import org.junit.Before
  *
  * @author Benjamin Muschko
  */
-class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
+class SqlDeleteBuilderTest extends SqlBuilderFixture {
     @Before
     @Override
     public void setUp() {
@@ -47,7 +47,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithoutCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME)
 
         assert delete.statement.sql == "DELETE FROM city"
@@ -58,7 +58,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithEqualsCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             eq(name: 'name', value: 'Grand Rapids')
         }
@@ -78,7 +78,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithNotEqualsCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             ne(name: 'name', value: 'Grand Rapids')
         }
@@ -95,7 +95,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithLikeCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             like(name: 'name', value: 'Grand%')
         }
@@ -115,7 +115,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithIsNullCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             isNull(name: 'name')
         }
@@ -137,7 +137,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithIsNotNullCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             isNotNull(name: 'name')
         }
@@ -150,7 +150,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithGreaterThanCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             gt(name: 'founded_year', value: 1822)
         }
@@ -170,7 +170,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithGreaterThanEqualsCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             ge(name: 'founded_year', value: 1821)
         }
@@ -187,7 +187,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithLessThanCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             lt(name: 'founded_year', value: 1820)
         }
@@ -207,7 +207,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithLessThanEqualsCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             le(name: 'founded_year', value: 1821)
         }
@@ -224,7 +224,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithBetweenCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             between(name: 'founded_year', start: 1820, end: 1830)
         }
@@ -242,7 +242,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithInCriteria() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             'in'(name: 'founded_year', value: [1821, 1825, 1700])
         }
@@ -261,7 +261,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithAndStatement() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             and {
                 eq(name: 'name', value: 'Grand Rapids')
@@ -284,7 +284,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithOrStatement() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             or {
                 eq(name: 'name', value: 'Grand Rapids')
@@ -305,7 +305,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithNotStatement() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             not {
                 between(name: 'founded_year', start: 1820, end: 1830)
@@ -328,7 +328,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithNestedLogicStatements() {
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             and {
                 isNotNull(name: 'name')
@@ -354,7 +354,7 @@ class GroovySqlDeleteBuilderTest extends GroovySqlBuilderFixture {
     @Test
     public void testBuildingWithControlStructure() {
         def cityNames = [ "Grand Rapids", "Little Rock", "Minneapolis"]
-        def builder = new GroovySqlDeleteBuilder(sql)
+        def builder = new SqlDeleteBuilder(sql)
         def delete = builder.delete(TABLE_NAME) {
             or {
                 for(cityName in cityNames) {

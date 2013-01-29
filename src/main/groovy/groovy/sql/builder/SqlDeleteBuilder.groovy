@@ -20,21 +20,19 @@ import groovy.sql.builder.result.Statement
 import groovy.sql.builder.node.factory.*
 
 /**
- *
- *
  * @author Benjamin Muschko
  */
-class GroovySqlDeleteBuilder extends AbstractGroovySqlFactoryBuilder {
-    GroovySqlDeleteBuilder(Sql sql) {
+class SqlDeleteBuilder extends AbstractSqlFactoryBuilder {
+    SqlDeleteBuilder(Sql sql) {
         super(sql)
     }
 
     @Override
     List<NamedAbstractFactory> getNamedFactories() {
         [new DeleteFactory(), new EqualsCriteriaFactory(), new NotEqualsCriteriaFactory(), new LikeCriteriaFactory(),
-         new IsNullCriteriaFactory(), new IsNotNullCriteriaFactory(), new GreaterThanCriteriaFactory(), new GreaterThanEqualsCriteriaFactory(),
-         new LessThanCriteriaFactory(), new LessThanEqualsCriteriaFactory(), new BetweenCriteriaFactory(), new InCriteriaFactory(),
-         new AndLogicOperationFactory(), new OrLogicOperationFactory(), new NotLogicOperatorFactory()].asImmutable()
+                new IsNullCriteriaFactory(), new IsNotNullCriteriaFactory(), new GreaterThanCriteriaFactory(), new GreaterThanEqualsCriteriaFactory(),
+                new LessThanCriteriaFactory(), new LessThanEqualsCriteriaFactory(), new BetweenCriteriaFactory(), new InCriteriaFactory(),
+                new AndLogicOperationFactory(), new OrLogicOperationFactory(), new NotLogicOperatorFactory()].asImmutable()
     }
 
     private class DeleteFactory extends GroovySqlAbstractFactory {
@@ -56,14 +54,16 @@ class GroovySqlDeleteBuilder extends AbstractGroovySqlFactoryBuilder {
         void onNodeCompleted(FactoryBuilderSupport builder, Object parent, Object node) {
             def statement = createStatement(node)
             node.statement = statement
-            builder.sql.execute(statement.sql, statement.params)
+            builder.sql.withTransaction {
+                builder.sql.execute(statement.sql, statement.params)
+            }
         }
 
         private String createSql(String table, criterias) {
             def sql = new StringBuilder()
             sql <<= "DELETE FROM ${table}"
 
-            if(criterias.size > 0) {
+            if (criterias.size > 0) {
                 sql <<= " ${getCriteriaExpression(criterias)}"
             }
 

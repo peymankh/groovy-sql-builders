@@ -23,7 +23,7 @@ import org.junit.Test
  *
  * @author Benjamin Muschko
  */
-class GroovySqlUpdateBuilderTest extends GroovySqlBuilderFixture {
+class SqlUpdateBuilderTest extends SqlBuilderFixture {
     @Before
     @Override
     public void setUp() {
@@ -37,7 +37,7 @@ class GroovySqlUpdateBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithoutCriteria() {
-        def builder = new GroovySqlUpdateBuilder(sql)
+        def builder = new SqlUpdateBuilder(sql)
         def update = builder.update(TABLE_NAME) {
             row(name: 'New Vegas', founded_year: 2011)
         }
@@ -52,7 +52,7 @@ class GroovySqlUpdateBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithEqualsCriteria() {
-        def builder = new GroovySqlUpdateBuilder(sql)
+        def builder = new SqlUpdateBuilder(sql)
         def update = builder.update(TABLE_NAME) {
             row(name: 'New Vegas', founded_year: 2011)
             eq(name: 'name', value: 'Las Vegas')
@@ -69,7 +69,7 @@ class GroovySqlUpdateBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildingWithNotCriteria() {
-        def builder = new GroovySqlUpdateBuilder(sql)
+        def builder = new SqlUpdateBuilder(sql)
         def update = builder.update(TABLE_NAME) {
             row(name: 'New Vegas', founded_year: 2011)
             not {

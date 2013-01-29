@@ -28,8 +28,8 @@ import groovy.sql.builder.result.ResultAware
  *
  * @author Benjamin Muschko
  */
-class GroovySqlInsertBuilder extends AbstractGroovySqlFactoryBuilder {
-    GroovySqlInsertBuilder(Sql sql) {
+class SqlInsertBuilder extends AbstractSqlFactoryBuilder {
+    SqlInsertBuilder(Sql sql) {
         super(sql)
     }
 
@@ -57,11 +57,15 @@ class GroovySqlInsertBuilder extends AbstractGroovySqlFactoryBuilder {
         void onNodeCompleted(FactoryBuilderSupport builder, Object parent, Object node) {
             def insertedIds = []
 
-            node.rows.each { row ->
-                def statement = createStatement(node, row)
-                node.statements << statement
-                def ids = builder.sql.executeInsert(statement.sql, statement.params)
-                insertedIds.addAll ids
+            builder.sql.withTransaction {
+                node.rows.each { row ->
+                    def statement = createStatement(node, row)
+                    node.statements << statement
+                    def ids
+
+                    ids = builder.sql.executeInsert(statement.sql, statement.params)
+                    insertedIds.addAll ids
+                }
             }
 
             node.result = insertedIds

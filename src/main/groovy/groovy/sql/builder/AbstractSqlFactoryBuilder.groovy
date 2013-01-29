@@ -16,20 +16,24 @@
 package groovy.sql.builder
 
 import groovy.sql.Sql
+import groovy.sql.builder.node.factory.NamedAbstractFactory
 
 /**
- *
- *
  * @author Benjamin Muschko
  */
-class GroovySqlHandler {
-    static final DEFAULT_URL = 'jdbc:h2:~/cityalmanac'
-    static final DEFAULT_USERNAME = 'sa'
-    static final DEFAULT_PASSWORD = ''
-    static final DEFAULT_DRIVER_CLASS_NAME = 'org.h2.Driver'
+abstract class AbstractSqlFactoryBuilder extends FactoryBuilderSupport {
+    Sql sql
 
-    static createDriverManagerSql(String url = DEFAULT_URL, String username = DEFAULT_USERNAME,
-                                                 String password = DEFAULT_PASSWORD, String driverClassName = DEFAULT_DRIVER_CLASS_NAME) {
-        Sql.newInstance(url, username, password, driverClassName)
+    AbstractSqlFactoryBuilder(Sql sql) {
+        this.sql = sql
+        registerFactories()
     }
+
+    def registerFactories() {
+        getNamedFactories().each { factory ->
+            registerFactory(factory.name, factory)
+        }
+    }
+
+    abstract List<NamedAbstractFactory> getNamedFactories()
 }

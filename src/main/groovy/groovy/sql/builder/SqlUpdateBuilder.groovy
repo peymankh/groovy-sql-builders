@@ -27,17 +27,17 @@ import groovy.sql.builder.node.factory.*
  *
  * @author Benjamin Muschko
  */
-class GroovySqlUpdateBuilder extends AbstractGroovySqlFactoryBuilder {
-    GroovySqlUpdateBuilder(Sql sql) {
+class SqlUpdateBuilder extends AbstractSqlFactoryBuilder {
+    SqlUpdateBuilder(Sql sql) {
         super(sql)
     }
 
     @Override
     List<NamedAbstractFactory> getNamedFactories() {
         [new UpdateFactory(), new RowFactory(), new EqualsCriteriaFactory(), new NotEqualsCriteriaFactory(), new LikeCriteriaFactory(),
-         new IsNullCriteriaFactory(), new IsNotNullCriteriaFactory(), new GreaterThanCriteriaFactory(), new GreaterThanEqualsCriteriaFactory(),
-         new LessThanCriteriaFactory(), new LessThanEqualsCriteriaFactory(), new BetweenCriteriaFactory(), new InCriteriaFactory(),
-         new AndLogicOperationFactory(), new OrLogicOperationFactory(), new NotLogicOperatorFactory()].asImmutable()
+                new IsNullCriteriaFactory(), new IsNotNullCriteriaFactory(), new GreaterThanCriteriaFactory(), new GreaterThanEqualsCriteriaFactory(),
+                new LessThanCriteriaFactory(), new LessThanEqualsCriteriaFactory(), new BetweenCriteriaFactory(), new InCriteriaFactory(),
+                new AndLogicOperationFactory(), new OrLogicOperationFactory(), new NotLogicOperatorFactory()].asImmutable()
     }
 
     private class UpdateFactory extends GroovySqlAbstractFactory {
@@ -59,8 +59,10 @@ class GroovySqlUpdateBuilder extends AbstractGroovySqlFactoryBuilder {
         void onNodeCompleted(FactoryBuilderSupport builder, Object parent, Object node) {
             def statement = createStatement(node)
             node.statement = statement
-            int rowsUpdated = builder.sql.executeUpdate(statement.sql, statement.params)
-            node.result = rowsUpdated
+            builder.sql.withTransaction {
+                node.result = builder.sql.executeUpdate(statement.sql, statement.params)
+            }
+
         }
 
         private String createSql(String table, Row row, criterias) {
@@ -69,7 +71,7 @@ class GroovySqlUpdateBuilder extends AbstractGroovySqlFactoryBuilder {
             row.columnNames.eachWithIndex { columnName, index ->
                 columnExpression <<= "$columnName = ?"
 
-                if(index < row.columnNames.size() - 1) {
+                if (index < row.columnNames.size() - 1) {
                     columnExpression <<= ", "
                 }
             }
@@ -77,7 +79,7 @@ class GroovySqlUpdateBuilder extends AbstractGroovySqlFactoryBuilder {
             def sql = new StringBuilder()
             sql <<= "UPDATE ${table} SET ${columnExpression}"
 
-            if(criterias.size() > 0) {
+            if (criterias.size() > 0) {
                 sql <<= " ${getCriteriaExpression(criterias)}"
             }
 

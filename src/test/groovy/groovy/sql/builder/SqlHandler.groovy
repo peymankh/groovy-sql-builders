@@ -13,26 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package groovy.sql.builder.node.factory
+package groovy.sql.builder
 
-import groovy.sql.builder.node.Criteria
-import groovy.sql.builder.SqlSelectBuilder.Select
+import groovy.sql.Sql
 
 /**
  *
  *
  * @author Benjamin Muschko
  */
-abstract class CriteriaAbstractFactory extends NamedAbstractFactory {
-    @Override
-    void setParent(FactoryBuilderSupport builder, Object parent, Object child) {
-        if(child instanceof Criteria) {
-            if(parent instanceof Select) {
-                parent.clauseElements.where << child
-            }
-            else {
-                parent.criterias << child
-            }
-        }
+class SqlHandler {
+    static final DEFAULT_URL = 'jdbc:h2:~/cityalmanac'
+    static final DEFAULT_USERNAME = 'sa'
+    static final DEFAULT_PASSWORD = ''
+    static final DEFAULT_DRIVER_CLASS_NAME = 'org.h2.Driver'
+
+    static createDriverManagerSql(String url = DEFAULT_URL, String username = DEFAULT_USERNAME,
+                                                 String password = DEFAULT_PASSWORD, String driverClassName = DEFAULT_DRIVER_CLASS_NAME) {
+        Sql.newInstance(url, username, password, driverClassName)
     }
 }

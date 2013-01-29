@@ -16,8 +16,6 @@
 package groovy.sql.builder.node.factory
 
 /**
- *
- *
  * @author Benjamin Muschko
  */
 abstract class NamedAbstractFactory extends AbstractFactory {

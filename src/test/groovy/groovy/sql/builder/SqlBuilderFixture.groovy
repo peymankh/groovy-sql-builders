@@ -29,7 +29,7 @@ import org.junit.BeforeClass
  *
  * @author Benjamin Muschko
  */
-class GroovySqlBuilderFixture {
+class SqlBuilderFixture {
     static final String TABLE_NAME = 'city'
     Sql sql
 
@@ -42,7 +42,7 @@ class GroovySqlBuilderFixture {
 
     @Before
     public void setUp() {
-        sql = GroovySqlHandler.createDriverManagerSql()
+        sql = SqlHandler.createDriverManagerSql()
         createCleanSchema()
     }
 

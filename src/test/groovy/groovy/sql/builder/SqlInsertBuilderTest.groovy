@@ -22,10 +22,10 @@ import org.junit.Test
  *
  * @author Benjamin Muschko
  */
-class GroovySqlInsertBuilderTest extends GroovySqlBuilderFixture {
+class SqlInsertBuilderTest extends SqlBuilderFixture {
     @Test
     public void testBuildInsertWithoutTableAttribute() {
-        def builder = new GroovySqlInsertBuilder(sql)
+        def builder = new SqlInsertBuilder(sql)
         def insert = builder.insert('city') {
             row(name: 'Grand Rapids', state: 'Michigan', founded_year: 1825)
             row(name: 'Little Rock', state: 'Arkansas', founded_year: 1821)
@@ -37,7 +37,7 @@ class GroovySqlInsertBuilderTest extends GroovySqlBuilderFixture {
 
     @Test
     public void testBuildInsertWithTableAttribute() {
-        def builder = new GroovySqlInsertBuilder(sql)
+        def builder = new SqlInsertBuilder(sql)
         def insert = builder.insert(table: 'city') {
             row(name: 'Grand Rapids', state: 'Michigan', founded_year: 1825)
             row(name: 'Little Rock', state: 'Arkansas', founded_year: 1821)

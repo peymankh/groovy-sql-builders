@@ -21,8 +21,10 @@ package groovy.sql.builder.node
  * @author Benjamin Muschko
  */
 class SelectClauseElements {
+    List<String> columns = []
     List<Criteria> where = []
     def groupBy
     def having
     def orderBy
+    def limit
 }
