@@ -29,6 +29,6 @@ class ColumnsCriteria implements Criteria {
 
     @Override
     def renderExpression() {
-        this.value.join(', ')
+        this.value?.join(', ')
     }
 }
